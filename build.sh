@@ -58,6 +58,9 @@ if [ $BUILD_PACKAGES_ONLY -eq 1 ]; then
     make toolchain/install -j"$CORES"
     make target/linux/compile -j"$CORES" || make target/linux/compile -j1 V=s
 
+    echo "Building toolchain runtime libs (libatomic1, libgcc1, libc, ...)..."
+    make package/libs/toolchain/compile -j"$CORES" || make package/libs/toolchain/compile -j1 V=s
+
     echo "Building custom packages..."
     for pkg_dir in ../packages/*; do
         if [ -d "$pkg_dir" ]; then
