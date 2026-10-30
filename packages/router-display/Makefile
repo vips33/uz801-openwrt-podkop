@@ -63,6 +63,8 @@ define Package/router-display/install
 
 	$(INSTALL_DIR) $(1)/etc/hotplug.d/button
 	$(INSTALL_BIN) ./files/hotplugs/20_power_button $(1)/etc/hotplug.d/button/20_power_button
+	$(INSTALL_DIR) $(1)/etc/rc.button
+	$(INSTALL_BIN) ./files/rc.button/power $(1)/etc/rc.button/power
 
 	$(INSTALL_DIR) $(1)/etc/logos
 	$(INSTALL_DATA) ./files/logos/boot_logo.fb $(1)/etc/logos/boot_logo.fb
@@ -73,3 +75,4 @@ define Package/router-display/install
 endef
 
 $(eval $(call BuildPackage,router-display))
+
