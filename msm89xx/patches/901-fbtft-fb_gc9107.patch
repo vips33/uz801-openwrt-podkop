@@ -1,6 +1,6 @@
 --- /dev/null
 +++ b/drivers/staging/fbtft/fb_st7735s.c
-@@ -0,0 +1,112 @@
+@@ -0,0 +1,106 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * FB driver for the Sitronix ST7735S 128x128 panel used by MF68E.
@@ -84,13 +84,6 @@
 +	msleep(120);
 +}
 +
-+static int init_display(struct fbtft_par *par)
-+{
-+	/* fbtft_init_display() calls reset; use the OEM panel timing. */
-+	par->fbtftops.reset = st7735s_reset;
-+	return fbtft_init_display(par);
-+}
-+
 +static struct fbtft_display display = {
 +	.regwidth = 8,
 +	.width = WIDTH,
@@ -99,7 +92,8 @@
 +	.fps = 20,
 +	.init_sequence = mf68e_init_sequence,
 +	.fbtftops = {
-+		.init_display = init_display,
++		.init_display = fbtft_init_display,
++		.reset = st7735s_reset,
 +		.set_addr_win = set_addr_win,
 +		.set_var = set_var,
 +	},
