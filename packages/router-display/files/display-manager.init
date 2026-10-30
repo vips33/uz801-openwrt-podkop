@@ -16,7 +16,7 @@ start_service() {
 
 stop_service() {
     . /lib/functions.sh
-    config_load system
+    config_load display
     config_get FIFO display fifo "/var/run/display.fifo"
 
    	[ -p "$FIFO" ] && { 
@@ -24,3 +24,4 @@ stop_service() {
         sleep 1; 
     }
 }
+
