@@ -21,7 +21,7 @@ echo $$ > "$PID_FILE"
 echo 0 > /sys/class/backlight/backlight/bl_power 2>/dev/null
 
 . /lib/functions.sh
-config_load system
+config_load display
 
 # Defaults
 DEFAULT_TIMEOUT_DIM=5
@@ -165,3 +165,4 @@ while read -r cmd <&3; do
 done
 
 # Cleanup runs automatically via trap EXIT
+
