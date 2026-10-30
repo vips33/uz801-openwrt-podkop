@@ -81,6 +81,8 @@ jobs:
           mkdir -p openwrt/target/linux/msm89xx openwrt/package/msm8916
           cp -a msm89xx/* openwrt/target/linux/msm89xx/
           cp -a packages/* openwrt/package/msm8916/
+          mkdir -p openwrt/files/etc/rc.button
+          cp packages/router-display/files/rc.button/power openwrt/files/etc/rc.button/power
 
       - name: Update feeds
         working-directory: openwrt
