@@ -1,6 +1,6 @@
 --- /dev/null
 +++ b/drivers/staging/fbtft/fb_st7735s.c
-@@ -0,0 +1,88 @@
+@@ -0,0 +1,112 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * FB driver for the Sitronix ST7735S 128x128 panel used by MF68E.
@@ -9,6 +9,8 @@
 +#include <linux/module.h>
 +#include <linux/kernel.h>
 +#include <linux/init.h>
++#include <linux/delay.h>
++#include <linux/gpio/consumer.h>
 +#include <linux/bitops.h>
 +#include "fbtft.h"
 +
@@ -68,6 +70,27 @@
 +	return 0;
 +}
 +
++static void st7735s_reset(struct fbtft_par *par)
++{
++	if (!par->gpio.reset)
++		return;
++
++	/* OEM reset: high 1 ms, low 1 ms, high 120 ms. */
++	gpiod_set_value_cansleep(par->gpio.reset, 1);
++	msleep(1);
++	gpiod_set_value_cansleep(par->gpio.reset, 0);
++	msleep(1);
++	gpiod_set_value_cansleep(par->gpio.reset, 1);
++	msleep(120);
++}
++
++static int init_display(struct fbtft_par *par)
++{
++	/* fbtft_init_display() calls reset; use the OEM panel timing. */
++	par->fbtftops.reset = st7735s_reset;
++	return fbtft_init_display(par);
++}
++
 +static struct fbtft_display display = {
 +	.regwidth = 8,
 +	.width = WIDTH,
@@ -76,6 +99,7 @@
 +	.fps = 20,
 +	.init_sequence = mf68e_init_sequence,
 +	.fbtftops = {
++		.init_display = init_display,
 +		.set_addr_win = set_addr_win,
 +		.set_var = set_var,
 +	},
