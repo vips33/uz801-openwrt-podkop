@@ -3,14 +3,20 @@
 # Unified power button handler
 
 FIFO="/var/run/display.fifo"
+BACKLIGHT="/sys/class/backlight/backlight"
 
 # Only process power button events
 [ "$BUTTON" = "power" ] || exit 0
 
 # Only act on button release
 [ "${ACTION}" = "released" ] && {
-    # Send command to daemon via FIFO (fails silently if daemon not running)
-    echo "full" > "$FIFO" 2>/dev/null
+    if [ -p "$FIFO" ]; then
+        echo "full" > "$FIFO" 2>/dev/null
+    elif [ -w "$BACKLIGHT/brightness" ]; then
+        echo 0 > "$BACKLIGHT/bl_power" 2>/dev/null
+        cat "$BACKLIGHT/max_brightness" > "$BACKLIGHT/brightness" 2>/dev/null
+    fi
 }
 
 exit 0
+
