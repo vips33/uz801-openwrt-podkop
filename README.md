@@ -1,5 +1,12 @@
 [README на русском](https://github.com/ImMALWARE/uz801-openwrt/blob/main/README_ru.md)
 # OpenWrt for UZ801 modem
+
+## Build profiles
+
+The GitHub Actions workflow supports both `uz801` and `mf68e`. Start **Build OpenWrt for UZ801 / MF68E** from the Actions tab and select the device profile.
+
+For a local build, run `./build.sh` for UZ801 or `./build.sh mf68e` for MF68E. The MF68E profile includes the GC9107 framebuffer driver and router display package. The LCD panel configuration is based on the archived MF68E reference and still needs confirmation on the exact MF680 hardware revision.
+
 ![Image 1](https://raw.githubusercontent.com/ImMALWARE/uz801-openwrt/refs/heads/main/img/1.png)
 
 ![Image 2](https://raw.githubusercontent.com/ImMALWARE/uz801-openwrt/refs/heads/main/img/2.png)
