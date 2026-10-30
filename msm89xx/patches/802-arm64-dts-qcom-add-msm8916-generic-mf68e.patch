@@ -52,21 +52,21 @@
 +   };
 +};
 +
-+/* GC9107 Panel on SPI5 (0x78b9000) */
-+&blsp_spi5 {
++/* ST7735S Panel on SPI4 (0x78b8000) */
++&blsp_spi4 {
 +   status = "okay";
 +   
 +   pinctrl-names = "default", "sleep";
-+   pinctrl-0 = <&spi5_default>;
-+   pinctrl-1 = <&spi5_sleep>;
++   pinctrl-0 = <&spi4_default>;
++   pinctrl-1 = <&spi4_sleep>;
 +
 +   panel@0 {
-+       compatible = "galaxycore,gc9107";
++       compatible = "sitronix,st7735s";
 +       reg = <0>;
-+       spi-max-frequency = <16000000>;
++       spi-max-frequency = <15000000>;
 +
-+       reset-gpios = <&tlmm 11 GPIO_ACTIVE_LOW>;
-+       dc-gpios = <&tlmm 30 GPIO_ACTIVE_HIGH>;
++       reset-gpios = <&tlmm 118 GPIO_ACTIVE_HIGH>;
++       dc-gpios = <&tlmm 116 GPIO_ACTIVE_HIGH>;
 +       backlight = <&backlight>;
 +
 +       vdd-supply = <&pm8916_l17>;
