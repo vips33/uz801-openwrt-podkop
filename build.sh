@@ -2,8 +2,14 @@
 set -e
 
 BUILD_PACKAGES_ONLY=0
+DEVICE="${1:-uz801}"
 if [ "$1" = "-packages" ]; then
     BUILD_PACKAGES_ONLY=1
+    DEVICE="uz801"
+fi
+if [ "$DEVICE" != "uz801" ] && [ "$DEVICE" != "mf68e" ]; then
+    echo "Usage: $0 [uz801|mf68e|-packages]"
+    exit 2
 fi
 
 export DEBIAN_FRONTEND=noninteractive
@@ -44,8 +50,8 @@ echo "Updating feeds..."
 ./scripts/feeds update -a >/dev/null
 ./scripts/feeds install -a >/dev/null
 
-echo "Applying configuration (diffconfig_uz801)..."
-cp ../diffconfig_uz801 .config
+echo "Applying configuration (diffconfig_${DEVICE})..."
+cp "../diffconfig_${DEVICE}" .config
 make defconfig
 
 CORES=$(nproc 2>/dev/null || echo 2)

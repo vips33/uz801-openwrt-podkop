@@ -1,7 +1,16 @@
-name: Build OpenWrt for UZ801
+name: Build OpenWrt for UZ801 / MF68E
 
 on:
   workflow_dispatch:
+    inputs:
+      device:
+        description: Device profile to build
+        required: true
+        type: choice
+        default: uz801
+        options:
+          - uz801
+          - mf68e
 
 permissions:
   contents: write
@@ -82,14 +91,14 @@ jobs:
       - name: Apply configuration
         working-directory: openwrt
         run: |
-          cp ../diffconfig_uz801 .config
+          cp "../diffconfig_${{ inputs.device }}" .config
           make defconfig
 
       - name: Cache downloaded sources
         uses: actions/cache@v4
         with:
           path: openwrt/dl
-          key: openwrt-dl-${{ steps.openwrt_version.outputs.VERSION }}-${{ hashFiles('diffconfig_uz801') }}
+          key: openwrt-dl-${{ steps.openwrt_version.outputs.VERSION }}-${{ inputs.device }}-${{ hashFiles('diffconfig_*') }}
           restore-keys: |
             openwrt-dl-${{ steps.openwrt_version.outputs.VERSION }}-
             openwrt-dl-
@@ -115,9 +124,9 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: "openwrt-${{ steps.buildnum.outputs.BUILD_NUM }}"
-          name: "OpenWrt for UZ801 Build ${{ steps.buildnum.outputs.BUILD_NUM }}"
+          name: "OpenWrt for ${{ inputs.device }} Build ${{ steps.buildnum.outputs.BUILD_NUM }}"
           body: |
-            OpenWrt ${{ steps.openwrt_version.outputs.VERSION }} for Yiming UZ801v3 (msm8916)
+            OpenWrt ${{ steps.openwrt_version.outputs.VERSION }} for ${{ inputs.device }} (msm8916)
           files: release_files/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
