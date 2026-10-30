@@ -1,6 +1,6 @@
 --- /dev/null
 +++ b/arch/arm64/boot/dts/qcom/msm8916-generic-mf68e.dts
-@@ -0,0 +1,173 @@
+@@ -0,0 +1,160 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +
 +/dts-v1/;
@@ -57,8 +57,8 @@
 +   status = "okay";
 +   
 +   pinctrl-names = "default", "sleep";
-+   pinctrl-0 = <&spi5_default>;
-+   pinctrl-1 = <&spi5_sleep>;
++   pinctrl-0 = <&blsp_spi4_default>;
++   pinctrl-1 = <&blsp_spi4_sleep>;
 +
 +   panel@0 {
 +       compatible = "sitronix,st7735s";
@@ -145,19 +145,6 @@
 +};
 +
 +&tlmm {
-+   spi5_default: spi5-default-state {
-+       pins = "gpio16", "gpio17", "gpio19";
-+       function = "blsp_spi5";
-+       drive-strength = <12>;
-+       bias-disable;
-+   };
-+
-+   spi5_sleep: spi5-sleep-state {
-+       pins = "gpio16", "gpio17", "gpio19";
-+       function = "gpio";
-+       drive-strength = <2>;
-+       bias-pull-down;
-+   };
 +
 +   usb_id_default: usb-id-default-state {
 +       pins = "gpio110";
