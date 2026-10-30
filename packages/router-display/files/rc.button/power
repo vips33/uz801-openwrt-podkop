@@ -1,0 +1,18 @@
+#!/bin/sh
+# On MF68E the physical power key is also the display wake key.
+# Do not run OpenWrt's default poweroff action on a short press.
+
+[ "${ACTION}" = "released" ] || exit 0
+
+FIFO="/var/run/display.fifo"
+BACKLIGHT="/sys/class/backlight/backlight"
+
+if [ -p "$FIFO" ]; then
+	echo "full" > "$FIFO" 2>/dev/null
+elif [ -w "$BACKLIGHT/brightness" ]; then
+	echo 0 > "$BACKLIGHT/bl_power" 2>/dev/null
+	cat "$BACKLIGHT/max_brightness" > "$BACKLIGHT/brightness" 2>/dev/null
+fi
+
+exit 0
+
