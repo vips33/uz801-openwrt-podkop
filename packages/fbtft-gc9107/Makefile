@@ -7,7 +7,7 @@ PKG_RELEASE:=1
 
 define KernelPackage/fbtft-gc9107
   SUBMENU:=Video Support
-  TITLE:=GC9107 Framebuffer Driver (fbtft)
+  TITLE:=MF68E ST7735S Framebuffer Driver (fbtft)
   DEPENDS:=@TARGET_msm89xx +kmod-backlight
   KCONFIG:= \
     CONFIG_FB=y \
@@ -28,15 +28,15 @@ define KernelPackage/fbtft-gc9107
     CONFIG_VT_CONSOLE_SLEEP=y \
     CONFIG_STAGING=y \
     CONFIG_FB_TFT=y \
-    CONFIG_FB_TFT_GC9107=y
+    CONFIG_FB_TFT_ST7735S=y
   FILES:= \
     $(LINUX_DIR)/drivers/staging/fbtft/fbtft.ko \
-    $(LINUX_DIR)/drivers/staging/fbtft/fb_gc9107.ko
-  AUTOLOAD:=$(call AutoProbe,fbtft fb_gc9107)
+    $(LINUX_DIR)/drivers/staging/fbtft/fb_st7735s.ko
+  AUTOLOAD:=$(call AutoProbe,fbtft fb_st7735s)
 endef
 
 define KernelPackage/fbtft-gc9107/description
-  GC9107 framebuffer driver (fbtft) for MSM8916-based devices (MF68E/UZ801).
+  ST7735S framebuffer driver (fbtft) for the MF68E MSM8916 display.
   Includes deferred I/O, sys_* helpers, PWM backlight and fbcon.
 endef
 
