@@ -57,8 +57,8 @@
 +   status = "okay";
 +   
 +   pinctrl-names = "default", "sleep";
-+   pinctrl-0 = <&spi4_default>;
-+   pinctrl-1 = <&spi4_sleep>;
++   pinctrl-0 = <&spi5_default>;
++   pinctrl-1 = <&spi5_sleep>;
 +
 +   panel@0 {
 +       compatible = "sitronix,st7735s";
