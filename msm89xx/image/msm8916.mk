@@ -52,4 +52,15 @@ define Device/generic-mf68e
 endef
 TARGET_DEVICES += generic-mf68e
 
+define Device/generic-m9s
+  $(Device/msm8916)
+  DEVICE_VENDOR := Generic
+  DEVICE_MODEL := M9S
+  FILESYSTEMS := squashfs
+  DEVICE_PACKAGES := wpad-basic-wolfssl rmtfs uci-usb-gadget \
+                     block-mount f2fs-tools msm-firmware-dumper \
+                     kmod-button-hotplug
+endef
+TARGET_DEVICES += generic-m9s
+
 endif

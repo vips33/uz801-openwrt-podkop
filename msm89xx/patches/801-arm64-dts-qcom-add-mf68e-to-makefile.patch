@@ -1,13 +1,14 @@
 From: Codex
-Subject: [PATCH] arm64: dts: qcom: add MF68E DTB to build
+Subject: [PATCH] arm64: dts: qcom: add MF68E and M9S DTBs to build
 
 --- a/arch/arm64/boot/dts/qcom/Makefile
 +++ b/arch/arm64/boot/dts/qcom/Makefile
-@@ -23,6 +23,7 @@
+@@ -23,6 +23,8 @@
  dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-samsung-gt58.dtb
  dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-samsung-j3ltetw.dtb
  dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-samsung-j5.dtb
 +dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-generic-mf68e.dtb
++dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-generic-m9s.dtb
  dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-samsung-j5x.dtb
  dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-samsung-rossa.dtb
  dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-samsung-serranove.dtb

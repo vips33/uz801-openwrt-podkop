@@ -1,4 +1,4 @@
-name: Build OpenWrt for UZ801 / MF68E
+name: Build OpenWrt for UZ801 / MF68E / M9S
 
 on:
   workflow_dispatch:
@@ -7,16 +7,23 @@ on:
         description: Device profile to build
         required: true
         type: choice
-        default: uz801
+        default: m9s
         options:
           - uz801
           - mf68e
+          - m9s
   push:
     branches:
       - main
     paths:
       - .github/workflows/build-openwrt.yml
+      - msm89xx/image/msm8916.mk
+      - msm89xx/patches/801-arm64-dts-qcom-add-mf68e-to-makefile.patch
       - msm89xx/patches/802-arm64-dts-qcom-add-msm8916-generic-mf68e.patch
+      - msm89xx/patches/805-arm64-dts-qcom-add-msm8916-generic-m9s.patch
+      - diffconfig_m9s
+      - files/etc/hotplug.d/net/99-modem-sms
+      - files/etc/uci-defaults/99-m9s-user-settings
       - msm89xx/patches/901-fbtft-fb_gc9107.patch
 
 
@@ -28,8 +35,8 @@ jobs:
     runs-on: ubuntu-22.04
 
     env:
-      TZ: Europe/Moscow
-      DEVICE: ${{ inputs.device || 'mf68e' }}
+      TZ: Asia/Hong_Kong
+      DEVICE: ${{ inputs.device || 'm9s' }}
 
     steps:
       - name: Checkout build repo
@@ -92,6 +99,12 @@ jobs:
           cp -a packages/* openwrt/package/msm8916/
           mkdir -p openwrt/files/etc/rc.button
           cp packages/router-display/files/rc.button/power openwrt/files/etc/rc.button/power
+          if [ "$DEVICE" = "m9s" ]; then
+            mkdir -p openwrt/files/etc/hotplug.d/net openwrt/files/etc/uci-defaults
+            cp files/etc/hotplug.d/net/99-modem-sms openwrt/files/etc/hotplug.d/net/99-modem-sms
+            cp files/etc/uci-defaults/99-m9s-user-settings openwrt/files/etc/uci-defaults/99-m9s-user-settings
+            chmod +x openwrt/files/etc/hotplug.d/net/99-modem-sms openwrt/files/etc/uci-defaults/99-m9s-user-settings
+          fi
 
       - name: Update feeds
         working-directory: openwrt
@@ -109,7 +122,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: openwrt/dl
-          key: openwrt-dl-${{ steps.openwrt_version.outputs.VERSION }}-${{ inputs.device || 'mf68e' }}-${{ hashFiles('diffconfig_*') }}
+          key: openwrt-dl-${{ steps.openwrt_version.outputs.VERSION }}-${{ inputs.device || 'm9s' }}-${{ hashFiles('diffconfig_*') }}
           restore-keys: |
             openwrt-dl-${{ steps.openwrt_version.outputs.VERSION }}-
             openwrt-dl-
@@ -135,9 +148,9 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: "openwrt-${{ steps.buildnum.outputs.BUILD_NUM }}"
-          name: "OpenWrt for ${{ inputs.device || 'mf68e' }} Build ${{ steps.buildnum.outputs.BUILD_NUM }}"
+          name: "OpenWrt for ${{ inputs.device || 'm9s' }} Build ${{ steps.buildnum.outputs.BUILD_NUM }}"
           body: |
-            OpenWrt ${{ steps.openwrt_version.outputs.VERSION }} for ${{ inputs.device || 'mf68e' }} (msm8916)
+            OpenWrt ${{ steps.openwrt_version.outputs.VERSION }} for ${{ inputs.device || 'm9s' }} (msm8916)
           files: release_files/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
