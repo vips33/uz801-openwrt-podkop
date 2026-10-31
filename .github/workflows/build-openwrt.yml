@@ -11,6 +11,14 @@ on:
         options:
           - uz801
           - mf68e
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/build-openwrt.yml
+      - msm89xx/patches/802-arm64-dts-qcom-add-msm8916-generic-mf68e.patch
+      - msm89xx/patches/901-fbtft-fb_gc9107.patch
+
 
 permissions:
   contents: write
@@ -21,6 +29,7 @@ jobs:
 
     env:
       TZ: Europe/Moscow
+      DEVICE: ${{ inputs.device || 'mf68e' }}
 
     steps:
       - name: Checkout build repo
@@ -93,14 +102,14 @@ jobs:
       - name: Apply configuration
         working-directory: openwrt
         run: |
-          cp "../diffconfig_${{ inputs.device }}" .config
+          cp "../diffconfig_$DEVICE" .config
           make defconfig
 
       - name: Cache downloaded sources
         uses: actions/cache@v4
         with:
           path: openwrt/dl
-          key: openwrt-dl-${{ steps.openwrt_version.outputs.VERSION }}-${{ inputs.device }}-${{ hashFiles('diffconfig_*') }}
+          key: openwrt-dl-${{ steps.openwrt_version.outputs.VERSION }}-${{ inputs.device || 'mf68e' }}-${{ hashFiles('diffconfig_*') }}
           restore-keys: |
             openwrt-dl-${{ steps.openwrt_version.outputs.VERSION }}-
             openwrt-dl-
@@ -126,9 +135,9 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: "openwrt-${{ steps.buildnum.outputs.BUILD_NUM }}"
-          name: "OpenWrt for ${{ inputs.device }} Build ${{ steps.buildnum.outputs.BUILD_NUM }}"
+          name: "OpenWrt for ${{ inputs.device || 'mf68e' }} Build ${{ steps.buildnum.outputs.BUILD_NUM }}"
           body: |
-            OpenWrt ${{ steps.openwrt_version.outputs.VERSION }} for ${{ inputs.device }} (msm8916)
+            OpenWrt ${{ steps.openwrt_version.outputs.VERSION }} for ${{ inputs.device || 'mf68e' }} (msm8916)
           files: release_files/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
