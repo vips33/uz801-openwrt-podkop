@@ -11,7 +11,7 @@ define Package/$(PKG_NAME)
   SECTION:=Utilities
   CATEGORY:=Utilities
   TITLE:=Default Settings For MiFis
-  DEPENDS:=+PACKAGE_luci:luci-proto-modemmanager +kmod-button-hotplug
+  DEPENDS:=+PACKAGE_luci:luci-proto-zhiheqmi +kmod-button-hotplug
 endef
 
 # Optional description
