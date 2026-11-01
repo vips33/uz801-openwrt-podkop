@@ -1,0 +1,5 @@
+#!/bin/sh
+[ "$ACTION" = "add" ] && [ "$INTERFACE" = "wwan0" ] && {
+    sleep 5
+    ubus call modem_at exec '{"cmd": "AT+CNMI=2,1,0,0,0"}'
+}
