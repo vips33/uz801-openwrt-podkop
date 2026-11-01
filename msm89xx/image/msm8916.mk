@@ -34,7 +34,7 @@ define Device/yiming-uz801v3
   DEVICE_MODEL := uz801v3
   SUPPORTED_DEVICES := yiming,uz801-v3
   FILESYSTEMS := squashfs
-  DEVICE_PACKAGES := wpad-basic-wolfssl rmtfs uci-usb-gadget \
+  DEVICE_PACKAGES := configs-mifi wpad-basic-wolfssl rmtfs uci-usb-gadget \
                      block-mount f2fs-tools \
                      msm-firmware-dumper
 endef
@@ -46,7 +46,7 @@ define Device/generic-mf68e
   DEVICE_MODEL := MF68E
   FILESYSTEMS := squashfs
   CMDLINE := "earlycon console=ttyMSM0,115200 quiet loglevel=0 vt.global_cursor_default=0 vt.cur_default=0 root=/dev/mmcblk0p14 rootfstype=squashfs rootwait nowatchdog"
-  DEVICE_PACKAGES := wpad-basic-wolfssl rmtfs uci-usb-gadget \
+  DEVICE_PACKAGES := configs-mifi wpad-basic-wolfssl rmtfs uci-usb-gadget \
                      block-mount f2fs-tools msm-firmware-dumper \
                      kmod-fbtft-gc9107 router-display kmod-button-hotplug
 endef
@@ -57,7 +57,7 @@ define Device/generic-m9s
   DEVICE_VENDOR := Generic
   DEVICE_MODEL := M9S
   FILESYSTEMS := squashfs
-  DEVICE_PACKAGES := wpad-basic-wolfssl rmtfs uci-usb-gadget \
+  DEVICE_PACKAGES := configs-mifi wpad-basic-wolfssl rmtfs uci-usb-gadget \
                      block-mount f2fs-tools msm-firmware-dumper \
                      kmod-button-hotplug
 endef

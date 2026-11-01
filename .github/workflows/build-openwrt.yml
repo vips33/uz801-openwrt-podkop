@@ -24,6 +24,7 @@ on:
       - diffconfig_m9s
       - files/etc/hotplug.d/net/99-modem-sms
       - files/etc/uci-defaults/99-m9s-user-settings
+      - packages/configs-mifi/**
       - msm89xx/patches/901-fbtft-fb_gc9107.patch
 
 
