@@ -23,7 +23,7 @@ define Build/Prepare
 	$(INSTALL_DIR) $(PKG_BUILD_DIR)
 	
 	# Copy uci_defaults and remove any trailing "exit 0"
-	$(INSTALL_BIN) ./files/uci_defaults $(PKG_BUILD_DIR)/99-default-config
+	$(INSTALL_BIN) ./files/uci_defaults $(PKG_BUILD_DIR)/99-z-configs-mifi
 	
 	# Add blank line separator
 	echo "" >> $(PKG_BUILD_DIR)/99-default-config
@@ -48,7 +48,7 @@ endef
 # Install configuration files and payload you already had
 define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/99-default-config $(1)/etc/uci-defaults/99-default-config
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/99-default-config $(1)/etc/uci-defaults/99-z-configs-mifi
 
 	$(INSTALL_DIR) $(1)/root/
 	$(INSTALL_BIN) ./files/luci-app-tailscale*.apk $(1)/root/
@@ -56,14 +56,12 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/view/admin_status/index
 	$(INSTALL_DATA) ./files/battery.htm $(1)/usr/lib/lua/luci/view/admin_status/index/20_battery.htm
 
-	$(INSTALL_DIR) $(1)/etc/hotplug.d/ieee80211
-	$(INSTALL_BIN) ./files/hotplugs/99-wifi-led $(1)/etc/hotplug.d/ieee80211/
-	
-	$(INSTALL_DIR) $(1)/etc/hotplug.d/iface
-	$(INSTALL_BIN) ./files/hotplugs/99-modem-led $(1)/etc/hotplug.d/iface/
 
 	$(INSTALL_DIR) $(1)/etc/hotplug.d/button
 	$(INSTALL_BIN) ./files/hotplugs/50-battery-show $(1)/etc/hotplug.d/button/
+
+	$(INSTALL_DIR) $(1)/etc/hotplug.d/net
+	$(INSTALL_BIN) ./files/hotplugs/99-modem-sms $(1)/etc/hotplug.d/net/
 
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/battery-monitor.init $(1)/etc/init.d/battery-monitor
